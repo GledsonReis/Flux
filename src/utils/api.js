@@ -1,20 +1,16 @@
 import Actions from '../actions/Actions';
-const $ = window.jQuery
+import { create } from 'apisauce';
 
 class API {
-  searchMovies(movie) {
-    $.ajax({
-      url: 'https://omdbapi.com/?apikey=YOURAPIKEY&s=' + movie.title,
-      dataType: 'json',
-      cache: false,
-      success(data) {
-        let movies = (data.Search ? data.Search : []);
-        Actions.showMovieResults(movies);
-      },
-      error(xhr, status, err) {
-        alert(err);
-      }
-    });
+  async searchMovies(movie) {
+    const api = create({
+      baseURL: 'https://omdbapi.com/?apikey=cba7d66b&s=',
+    })
+
+    const response = await api.get(movie.title)
+
+    let movies = (response.data.Search ? response.data.Search : []);
+    Actions.showMovieResults(movies);
   }
 }
 export default new API();
